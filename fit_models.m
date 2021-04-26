@@ -37,6 +37,13 @@ function [results,bms_results] = fit_models(data,models,results)
                 param(2) = struct('name','lrate_theta','lb',0,'ub',1,'logpdf',@(x) 0);
                 param(3) = struct('name','lrate_V','lb',0,'ub',1,'logpdf',@(x) 0);
                 param(4) = struct('name','lrate_p','lb',0,'ub',1,'logpdf',@(x) 0);
+                
+            case 4
+                likfun = @actor_critic0_lik;
+                param(1) = struct('name','beta','lb',0,'ub',50,'logpdf',@(x) 0);
+                param(2) = struct('name','lrate_theta','lb',0,'ub',1,'logpdf',@(x) 0);
+                param(3) = struct('name','lrate_p','lb',0,'ub',1,'logpdf',@(x) 0);
+                param(4) = struct('name','lrate_V','lb',0,'ub',1,'logpdf',@(x) 0);
         end
         
         results(m) = mfit_optimize(likfun,param,data);

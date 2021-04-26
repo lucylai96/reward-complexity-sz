@@ -1,4 +1,4 @@
-function results = analyze_collins14(data)
+function [results, results_all] = analyze_collins14(data)
     
     % Construct reward-complexity curve for Collins et al. (2014) data.
     
@@ -43,6 +43,14 @@ function results = analyze_collins14(data)
             results.V(s,:,c) = nanmean(V(setsize==c,:));
             results.R_data(s,c) = nanmean(R_data(setsize==c));
             results.V_data(s,c) = nanmean(V_data(setsize==c));
+            
+            if nargout > 1
+                results_all.R{s,c} = R(setsize==c,:);
+                results_all.V{s,c} = V(setsize==c,:);
+                results_all.R_data{s,c} = R_data(setsize==c,:);
+                results_all.V_data{s,c} = V_data(setsize==c,:);
+                results_all.RV_corr(s,c) = corr(R_data(setsize==c,:),V_data(setsize==c,:),'type','spearman');
+            end
         end
         
         clear R V

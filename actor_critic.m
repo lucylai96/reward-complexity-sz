@@ -31,19 +31,17 @@ function simdata = actor_critic(agent,data)
                 r = 0;
             end
             cost = logpolicy(a) - log(p(a));    % policy complexity cost
-            rpe = beta*r - cost - V(s);         % reward prediction error
-            g = rpe*beta*(1 - policy(a));       % policy gradient
-            V(s) = V(s) + agent.lrate_V*rpe;    % state value update
-            
+            rpe = beta*r - cost - V(s);   % reward prediction error
+            g = rpe*beta*(1 - policy(a)); % policy gradient
+            V(s) = V(s) + agent.lrate_V*rpe;                                                    % state value update
             if agent.lrate_beta > 0
                 beta = beta + agent.lrate_beta*(agent.C-cost)*(theta(s,a)-(theta(s,:)*policy'));
                 beta = max(min(beta,50),0);
             end
             if agent.lrate_p > 0
-                p = p + agent.lrate_p*(policy - p); p = p./sum(p);  % marginal update
+                p = p + agent.lrate_p*(policy - p); p = p./sum(p);                                  % marginal update
             end
-            
-            theta(s,a) = theta(s,a) + agent.lrate_theta*g/t;        % policy parameter update
+            theta(s,a) = theta(s,a) + agent.lrate_theta*g/t;    % policy parameter update
             simdata.action(ix(t)) = a;
             simdata.reward(ix(t)) = r;
             simdata.expreward(ix(t)) = policy(corchoice(t));
